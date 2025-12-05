@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<body style="font-family:Arial; padding:20px; background:#fff; color:#444;">
+
+<h2 style="color:#F58CAF; text-align:center;">||  Halaman Pembayaran  ||</h2>
+
+<div id="payment-cart" style="margin-top:20px;"></div>
+
+<h3 style="color:#F58CAF; margin-top:30px;">Form Pembayaran</h3>
+<form id="paymentForm" style="max-width:400px; margin-top:10px;">
+    <label>Metode Pembayaran:</label><br>
+    <select id="paymentMethod" required style="width:100%; padding:5px; margin-bottom:10px;">
+        <option value="">--Pilih Metode--</option>
+        <option value="transfer">Transfer Bank</option>
+        <option value="credit">Kartu Kredit</option>
+        <option value="cod">Bayar di Tempat (COD)</option>
+    </select><br>
+
+    <label>Nomor Rekening / Kartu:</label><br>
+    <input type="text" id="paymentNumber" required style="width:100%; padding:5px; margin-bottom:10px;"><br>
+
+    <button type="submit" style="background:#F58CAF; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">
+        CheckOut
+    </button>
+</form>
+
+<script>
+let paymentCart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+function renderPaymentCart(){
+    const container = document.getElementById('payment-cart');
+    container.innerHTML = '';
+
+    if(paymentCart.length === 0){
+        container.innerHTML = '<p style="text-align:center; color:#888;">Belum ada produk untuk dibayar.</p>';
+        return;
+    }
+
+    let total = 0;
+    paymentCart.forEach(item => {
+        total += item.price * item.quantity;
+        container.innerHTML += `
+            <div style="border:1px solid #f4a6c1; border-radius:10px; padding:10px; margin-bottom:10px;">
+                <p style="margin:0; font-weight:bold;">${item.name}</p>
+                <p style="margin:0;">Harga: $${item.price} x ${item.quantity}</p>
+            </div>
+        `;
+    });
+
+    container.innerHTML += `<h3 style="text-align:center; color:#F58CAF;">Total: $${total}</h3>`;
+}
+
+document.getElementById('paymentForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const method = document.getElementById('paymentMethod').value;
+    const number = document.getElementById('paymentNumber').value;
+
+    if(paymentCart.length === 0){
+        alert('Tidak ada produk untuk dibayar!');
+        return;
+    }
+
+    alert(`Pembayaran berhasil!\n\nMetode: ${method}\nNomor: ${number}\nTotal: $${paymentCart.reduce((sum,i)=>sum+i.price*i.quantity,0)}`);
+
+    localStorage.removeItem('cart');
+
+
+});
+
+window.onload = function(){
+    renderPaymentCart();
+};
+</script>
+
+</body>
+</html>

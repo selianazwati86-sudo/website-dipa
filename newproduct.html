@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body style="background:#fff; padding:20px; font-family:Arial;">
+
+<h2 style="color:#F58CAF; text-align:center;">|| New Product ||</h2>
+
+<div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+    <div style="border:2px solid #f4a6c1; border-radius:12px; padding:10px; text-align:center; width:180px;">
+        <img src="C:\gambar\gua sha.png" style="width:100%;">
+        <p style="color:#F58CAF; font-weight:bold;">Gua Sha | JARDIN</p>
+        <p style="color:#9f9e9e;">$24</p>
+        <button style="background:#f4a6c1; border:none; padding:8px 16px; color:white; border-radius:6px; cursor:pointer;"
+            onclick="addToCart('Gua Sha | JARDIN', 24)">Add to Bag</button>
+    </div>
+
+    <div style="border:2px solid #f4a6c1; border-radius:12px; padding:10px; text-align:center; width:175px;">
+        <img src="C:\gambar\lemon mask.png" style="width:100%;">
+        <p style="color:#F58CAF; font-weight:bold;">Brightening Lemon Mask</p>
+        <p style="color:#9f9e9e;">$9</p>
+        <button style="background:#f4a6c1; border:none; padding:8px 16px; color:white; border-radius:6px; cursor:pointer;"
+            onclick="addToCart('Brightening Lemon Mask', 9)">Add to Bag</button>
+    </div>
+</div>
+
+<script>
+function addToCart(name, price) {
+    const product = {name:name, price:price, quantity:1};
+    parent.frames['atas'].postMessage({type:'addToCart', product:product}, '*');
+}
+</script>
+
+</body>
+</html>

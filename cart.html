@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<body style="font-family:Arial; padding:20px; background:#fff; color:#444;">
+
+<h2 style="color:#F58CAF; text-align:center;">||  Keranjang Belanja  ||</h2>
+
+<div id="cart-items" style="margin-top:20px;"></div>
+
+<div style="text-align:center; margin-top:20px;">
+    <button id="checkoutBtn" 
+        style="background:#F58CAF; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">
+        Pembayaran
+    </button>
+</div>
+
+<script>
+let cart = [
+    {name:'GUA Sha  ||  JARDIN', price:24, quantity:1},
+];
+
+function renderCart() {
+    const container = document.getElementById('cart-items');
+    container.innerHTML = '';
+
+    if(cart.length === 0){
+        container.innerHTML = '<p style="text-align:center; color:#888;">Belum ada produk di keranjang.</p>';
+        return;
+    }
+
+    let total = 0;
+
+    cart.forEach((item, index)=>{
+        total += item.price * item.quantity;
+        container.innerHTML += `
+            <div style="border:1px solid #f4a6c1; border-radius:10px; padding:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <p style="margin:0; font-weight:bold;">${item.name}</p>
+                    <p style="margin:0;">Harga: $${item.price}</p>
+                    <div style="margin-top:5px;">
+                        <button onclick="changeQty(${index}, -1)" style="padding:2px 8px; margin-right:5px;">-</button>
+                        <span>${item.quantity}</span>
+                        <button onclick="changeQty(${index}, 1)" style="padding:2px 8px; margin-left:5px;">+</button>
+                    </div>
+                </div>
+                <button style="background:#f58caf; color:white; border:none; padding:6px 12px; border-radius:5px; cursor:pointer;" onclick="removeItem(${index})">Hapus</button>
+            </div>
+        `;
+    });
+
+    container.innerHTML += `<h3 style="text-align:center; color:#F58CAF;">Total: $${total}</h3>`;
+}
+
+function removeItem(index){
+    cart.splice(index, 1);
+    renderCart();
+}
+
+function changeQty(index, delta){
+    cart[index].quantity += delta;
+    if(cart[index].quantity < 1) cart[index].quantity = 1;
+    renderCart();
+}
+
+
+document.getElementById('checkoutBtn').addEventListener('click', function(){
+    if(cart.length === 0){
+        alert('Keranjang masih kosong!');
+        return;
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    window.location.href = 'pembayaran.html';
+});
+
+window.onload = function(){
+    renderCart();
+};
+</script>
+
+</body>
+</html>
